@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar'
+import TypoGraphy from '@material-ui/core/Typography';
+import NavBar from './components/header';
+import Products from './components/cards';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { getProductDetails } from './_service'
+
+class App extends Component {
+  state = {
+    products: [],
+    offset: 0,
+    limit: 10
+  }
+
+  componentDidMount(){
+    this.fetchMore();
+  }
+
+  fetchMore = ()=>{
+    const { offset, limit} = this.state
+    getProductDetails({offset, limit})
+    .then(data=>this.setState({products: data, offset: limit, limit: 2*limit}));
+  }
+
+  render() {
+    return (
+      <div>
+        <AppBar color="primary" position="static">
+          <Toolbar>
+            <TypoGraphy variant="title"
+              color="inherit"
+            >
+             <NavBar />
+           </TypoGraphy>
+          </Toolbar>        
+        </AppBar>
+        <Products products={this.state.products} fetchMore={this.fetchMore}/>
+      </div>
+    );
+  }
 }
-
 export default App;

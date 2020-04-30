@@ -11,3 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.MuiAppBar-colorPrimary{
+  color: #fff;
+    background-color: #fc2779!important;
+}
